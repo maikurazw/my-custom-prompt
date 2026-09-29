@@ -1,1 +1,42 @@
+name: Build & Verify Shells
 
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate-builds:
+    runs-name: Verify codebase builds on Windows runner
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository source
+      uses: actions/checkout@v4
+
+    # 1. Verify Python Ecosystem
+    - name: Set up Python environment
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    - name: Verify Python Syntax
+      run: python -m py_compile 1-python/main.py
+
+    # 2. Verify C# Ecosystem
+    - name: Set up .NET Core Environment
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+    - name: Build C# Executable
+      run: dotnet build 2-csharp/MyCustomPrompt.sln --configuration Release
+
+    # 3. Verify Go Ecosystem
+    - name: Set up Go runtime environment
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.21'
+    - name: Compile Go Binary Shell
+      run: |
+        cd 3-go
+        go build -v ./...

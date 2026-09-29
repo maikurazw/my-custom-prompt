@@ -1,0 +1,12 @@
+# Windows OS temporary files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# JetBrains / VS Code workspace configurations
+.idea/
+.vscode/
+*.suo
+*.user
+*.workspace
